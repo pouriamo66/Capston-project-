@@ -1,33 +1,49 @@
-# History files
-.Rhistory
-.Rapp.history
+#swim1<-read.csv("https://assets.datacamp.com/production/course_4674/datasets/2015_FINA.csv",comment.char ="#", header=TRUE,sep=",",stringsAsFactors =FALSE)
 
-# Session Data files
-.RData
+#Did the swimmers swim faster in final competition?----
+swim1$round=as.factor(swim1$round)
+nlevels(swim1$round)
+(l1=lm(formula = splitswimtime~0+round,data = swim1))
+anova((l1))
+summary(l1)
+swim1$round
 
-# Example code in package build process
-*-Ex.R
+#Did lanes effect on swimmers performance?----
+swim1$lane=as.factor(swim1$lane)
+nlevels(swim1$lane)
+(l2=lm(formula = splitswimtime~lane,data = swim1))
+summary(l2)
 
-# Output files from R CMD build
-/*.tar.gz
+#How does the performance of swimmers decline over long events?----
+l3=lm(formula = splitswimtime~distance,data = swim1)
+summary(l3)
 
-# Output files from R CMD check
-/*.Rcheck/
+l3.0=lm(formula = splitswimtime~0+distance,data = swim1)
+summary(l3.0)
 
-# RStudio files
-.Rproj.user/
+#Does any differences between men and women in performance?----
+attach(swim1)
+swim1$gender=as.factor(swim1$gender)
+l4=lm(formula = splitswimtime~0+gender,data = swim1)
+summary(l4)
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+#Is there any significant differences between different countries swimmer performance?----
+swim1$name=as.factor(swim1$name)
+l5=lm(formula = splitswimtime~0+name,data = swim1)
+summary(l5)
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+#What is the relation between reaction time and performance?----
+l6=lm(formula = splitswimtime~reactiontime,data = swim1)
+summary(l6)
 
-# knitr and R markdown default cache directories
-/*_cache/
-/cache/
+l6.0=lm(formula = splitswimtime~0+reactiontime,data = swim1)
+summary(l6.0)
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
+#Which stroke was the most exciting one?----
+swim1$stroke=as.factor(swim1$stroke)
+l7=lm(formula = splitswimtime~0+stroke,data = swim1)
+summary(l7)
+
+swim1$stroke=relevel(x = swim1$stroke,"FLY")
+l7.0=lm(formula = splitswimtime~stroke,data = swim1)
+summary(l7.0)
